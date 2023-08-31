@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from 'react';
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="game-container">
+        <div className="card-container">
+          <div className="up-stack"></div>
+          <div className="up-stack"></div>
+        </div>
+
+        <div className="card-container" onClick={() => takecard()}>
+          <div className="take-stack"></div>
+        </div>
+
+        <div className="card-container">
+          <div className="down-stack"></div>
+          <div className="down-stack"></div>
+        </div>
+      </div>
+      <div className="player-hand">
+        {stack.map((item, idx) => {
+          return (
+            <div key={'card-${idx}'} className="player-hand1">
+              {item}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
