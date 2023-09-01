@@ -11,20 +11,21 @@ function App() {
   useEffect(() => {
     console.log("Entro al componente")
   }, [stack]);
+  
+  function randomNumberInRange(min, max) {
 
-  const getRandomInt = (max) => {
-    return Math.floor(Math.random() * max);
-  };
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   const takecard = () => {
     if (stack.length < 8){
       console.log("entro al obtener");
       let cards = stack;
-      const num = getRandomInt(100);
-
-      setStack([...cards, num]);
+      const num = randomNumberInRange(2,99);
+      if(!cards.includes(num)) setStack([...cards, num]);
+    
     } else {
-      console.log("Limite de cartas, No puedes tomar más")
+      alert("Limite de cartas")
     }
     
 
