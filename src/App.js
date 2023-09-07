@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 function App() {
   const [stack, setStack] = useState([]);
-  const [upStackfirst, setupStackfirst] = useState(1);
-  const [upStackSecond, setupStackSecond] = useState(1);
-  const [downStackfirst, setdownStackfirst] = useState(100);
-  const [downStacksecond, setdownStacksecond] = useState(100);
+  const [upStackfirst, setupStackfirst] = useState([1,2]);
+  const [upStackSecond, setupStackSecond] = useState([1]);
+  const [downStackfirst, setdownStackfirst] = useState([100]);
+  const [downStacksecond, setdownStacksecond] = useState([100]);
+  const [selectedCard, setselectedcard] =useState();
+  console.log(upStackfirst)
 
   useEffect(() => {
     console.log("Entro al componente")
@@ -27,15 +29,26 @@ function App() {
     } else {
       alert("Limite de cartas")
     }
-    
-
-    
   };
+  const selectCard = (card) =>{
+    setselectedcard(card)
+    console.log(card)
+  }
+  const insertCard = () =>{
+    let stack = upStackfirst;
+    if (selectedCard){
+      setupStackfirst([...stack, selectedCard])
+    }
+    
+    setselectedcard(null)
+  }
+  
+
   return (
     <>
       <div className="game-container">
         <div className="card-container">
-          <div className="up-stack">{upStackfirst}</div>
+          <div className="up-stack" onClick={() => insertCard()}>{upStackfirst[upStackfirst.length -1]}</div>
           <div className="up-stack">{upStackSecond}</div>
         </div>
 
@@ -49,10 +62,11 @@ function App() {
         </div>
       </div>
       <div className="player-hand">
-        {stack.map((item, idx) => {
+        {stack.map((card, idx) => {
           return (
-            <div key={'card-${idx}'} className="player-hand1">
-              {item}
+            <div key={`card-${idx}`} className="player-hand1" style={{userSelect:'none'}}
+            onClick={()=>selectCard(card)}>
+              {card}
             </div>
           );
         })}
