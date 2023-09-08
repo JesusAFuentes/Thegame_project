@@ -35,35 +35,42 @@ function App() {
     setselectedcard(card)
     console.log(card)
   }
-  const insertCard = () =>{
-    let stack = upStackfirst;
-    if (selectedCard){
-      setupStackfirst([...stack, selectedCard])
+  const insertCard = () => {
+    if (selectedCard) {
+      const updatedStack = upStackfirst;
+      const updatedHand = stack.filter((card) => card !== selectedCard);
+      setupStackfirst([...updatedStack, selectedCard]);
+      setStack(updatedHand);
+      setselectedcard(null);
     }
-    
-    setselectedcard(null)
   }
 
-  const insertCard1 = () =>{
-    let stack = upStackSecond;
-    if (selectedCard){
-      setupStackSecond([...stack, selectedCard])
+  const insertCard1 = () => {
+    if (selectedCard) {
+      const updatedStack = upStackSecond;
+      const updatedHand = stack.filter((card) => card !== selectedCard);
+      setupStackSecond([...updatedStack, selectedCard]);
+      setStack(updatedHand);
+      setselectedcard(null);
     }
-    setselectedcard(null)
   }
-  const insertCard2 = () =>{
-    let stack = downStackfirst;
-    if (selectedCard){
-      setdownStackfirst([...stack, selectedCard])
+  const insertCard2 = () => {
+    if (selectedCard) {
+      const updatedStack = downStackfirst;
+      const updatedHand = stack.filter((card) => card !== selectedCard);
+      setdownStackfirst([...updatedStack, selectedCard]);
+      setStack(updatedHand);
+      setselectedcard(null);
     }
-    setselectedcard(null)
   }
-  const insertCard3 = () =>{
-    let stack = downStacksecond;
-    if (selectedCard){
-      setdownStacksecond([...stack, selectedCard])
+  const insertCard3 = () => {
+    if (selectedCard) {
+      const updatedStack = downStacksecond;
+      const updatedHand = stack.filter((card) => card !== selectedCard);
+      setdownStacksecond([...updatedStack, selectedCard]);
+      setStack(updatedHand);
+      setselectedcard(null);
     }
-    setselectedcard(null)
   }
 
   return (
