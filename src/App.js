@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 function App() {
   const [stack, setStack] = useState([]);
-  const [upStackfirst, setupStackfirst] = useState([1,2]);
+  const [upStackfirst, setupStackfirst] = useState([1]);
   const [upStackSecond, setupStackSecond] = useState([1]);
   const [downStackfirst, setdownStackfirst] = useState([100]);
   const [downStacksecond, setdownStacksecond] = useState([100]);
   const [selectedCard, setselectedcard] =useState();
   console.log(upStackfirst)
+  console.log(upStackSecond)
 
   useEffect(() => {
     console.log("Entro al componente")
@@ -42,14 +43,35 @@ function App() {
     
     setselectedcard(null)
   }
-  
+
+  const insertCard1 = () =>{
+    let stack = upStackSecond;
+    if (selectedCard){
+      setupStackSecond([...stack, selectedCard])
+    }
+    setselectedcard(null)
+  }
+  const insertCard2 = () =>{
+    let stack = downStackfirst;
+    if (selectedCard){
+      setdownStackfirst([...stack, selectedCard])
+    }
+    setselectedcard(null)
+  }
+  const insertCard3 = () =>{
+    let stack = downStacksecond;
+    if (selectedCard){
+      setdownStacksecond([...stack, selectedCard])
+    }
+    setselectedcard(null)
+  }
 
   return (
     <>
       <div className="game-container">
         <div className="card-container">
-          <div className="up-stack" onClick={() => insertCard()}>{upStackfirst[upStackfirst.length -1]}</div>
-          <div className="up-stack">{upStackSecond}</div>
+          <div className="up-stack" onClick={() => insertCard()} style={{userSelect:'none'}}> {upStackfirst[upStackfirst.length -1]}</div>
+          <div className="up-stack" onClick={() => insertCard1()} style={{userSelect:'none'}}>{upStackSecond[upStackSecond.length -1]}</div>
         </div>
 
         <div className="card-container" onClick={() => takecard()}>
@@ -57,8 +79,8 @@ function App() {
         </div>
 
         <div className="card-container">
-          <div className="down-stack">{downStackfirst}</div>
-          <div className="down-stack">{downStacksecond}</div>
+          <div className="down-stack" onClick={()=> insertCard2()} style={{userSelect:'none'}}>{downStackfirst[downStackfirst.length -1]}</div>
+          <div className="down-stack" onClick={()=> insertCard3()} style={{userSelect:'none'}}>{downStacksecond[downStacksecond.length -1]}</div>
         </div>
       </div>
       <div className="player-hand">
