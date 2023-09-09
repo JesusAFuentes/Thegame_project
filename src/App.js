@@ -37,16 +37,23 @@ function App() {
   }
   const insertCard = () => {
     if (selectedCard) {
-      const updatedStack = upStackfirst;
-      const updatedHand = stack.filter((card) => card !== selectedCard);
-      setupStackfirst([...updatedStack, selectedCard]);
-      setStack(updatedHand);
-      setselectedcard(null);
+      const topCard = upStackfirst[upStackfirst.length - 1];
+      if (!topCard || selectedCard >= topCard) {
+        const updatedStack = [...upStackfirst, selectedCard];
+        const updatedHand = stack.filter((card) => card !== selectedCard);
+  
+        setupStackfirst(updatedStack);
+        setStack(updatedHand);
+        setselectedcard(null);
+      } else {
+        alert("La carta seleccionada no puede ser menor que la carta superior del stack.");
+      }
     }
   }
 
   const insertCard1 = () => {
     if (selectedCard) {
+      const topCard1 = upStackSecond[upStackSecond.length - 1];
       const updatedStack = upStackSecond;
       const updatedHand = stack.filter((card) => card !== selectedCard);
       setupStackSecond([...updatedStack, selectedCard]);
