@@ -46,20 +46,20 @@ function App() {
         setStack(updatedHand);
         setselectedcard(null);
       } else {
-        alert("La carta seleccionada debe ser exactamente 10 unidades menor o mayor que la carta superior del stack.");
+        alert("La carta seleccionada debe ser exactamente 10 unidades menor que la carta superior del stack.");
       }}
     }
   const insertCard1 = () => {
     if (selectedCard) {
       const topCard1 = upStackSecond[upStackSecond.length - 1];
-      if (!topCard1  || selectedCard >= topCard1){
+      if (!topCard1  || selectedCard=== topCard1 - 10||selectedCard > topCard1){
         const updatedStack1 = upStackSecond;
         const updatedHand1 = stack.filter((card) => card !== selectedCard);
         setupStackSecond([...updatedStack1, selectedCard]);
         setStack(updatedHand1);
         setselectedcard(null);
       }else{
-        alert("La carta seleccionada no puede ser menor que la carta superior del stack.");
+        alert("La carta seleccionada debe ser exactamente 10 unidades menor que la carta superior del stack.");
       }
       
     }
@@ -67,28 +67,28 @@ function App() {
   const insertCard2 = () => {
     if (selectedCard) {
       const topCard2 = downStackfirst[downStackfirst.length - 1];
-      if (!topCard2  || selectedCard <= topCard2){
+      if (!topCard2  || selectedCard=== topCard2 + 10 ||selectedCard < topCard2){
       const updatedStack = downStackfirst;
       const updatedHand = stack.filter((card) => card !== selectedCard);
       setdownStackfirst([...updatedStack, selectedCard]);
       setStack(updatedHand);
       setselectedcard(null);
       }else{
-        alert("La carta seleccionada no puede ser mayor que la carta menor del stack");
+        alert("La carta seleccionada debe ser exactamente 10 unidades mayor que la carta superior del stack.");
       }
     }
   }
   const insertCard3 = () => {
     if (selectedCard) {
       const topCard3 = downStacksecond[downStacksecond.length -1];
-      if (!topCard3 || selectedCard <= topCard3){
+      if (!topCard3 || selectedCard=== topCard3 + 10  ||selectedCard < topCard3){
         const updatedStack = downStacksecond;
         const updatedHand = stack.filter((card) => card !== selectedCard);
         setdownStacksecond([...updatedStack, selectedCard]);
         setStack(updatedHand);
         setselectedcard(null);
       }else{
-        alert("La carta seleccionada no puede ser mayor que la carta menor del stack")
+        alert("La carta seleccionada debe ser exactamente 10 unidades mayor que la carta superior del stack.")
       }
       
     }
