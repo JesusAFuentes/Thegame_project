@@ -24,7 +24,7 @@ function App() {
     if (stack.length < 8){
       console.log("entro al obtener");
       let cards = stack;
-      const num = randomNumberInRange(2,99);
+      const num = randomNumberInRange(2,20);
       if(!cards.includes(num)) setStack([...cards, num]);
     
     } else {
@@ -38,7 +38,7 @@ function App() {
   const insertCard = () => {
     if (selectedCard) {
       const topCard = upStackfirst[upStackfirst.length - 1];
-      if (!topCard || selectedCard >= topCard) {
+      if (!topCard || selectedCard === topCard - 10 || selectedCard > topCard) {
         const updatedStack = [...upStackfirst, selectedCard];
         const updatedHand = stack.filter((card) => card !== selectedCard);
   
@@ -46,11 +46,9 @@ function App() {
         setStack(updatedHand);
         setselectedcard(null);
       } else {
-        alert("La carta seleccionada no puede ser menor que la carta superior del stack.");
-      }
+        alert("La carta seleccionada debe ser exactamente 10 unidades menor o mayor que la carta superior del stack.");
+      }}
     }
-  }
-
   const insertCard1 = () => {
     if (selectedCard) {
       const topCard1 = upStackSecond[upStackSecond.length - 1];
