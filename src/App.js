@@ -48,6 +48,35 @@ function App() {
   }, [stack, stackcards])
 
 
+  const validateDefeat = () => {
+    if (upStackfirst.length > 0 && upStackSecond.length > 0) {
+      const first = upStackfirst[upStackfirst.length - 1];
+      const second = upStackSecond[upStackSecond.length - 1];
+      const downfirst = downStackfirst[downStackfirst.length - 1];
+      const downSecond = downStacksecond[downStacksecond.length - 1];
+      console.log(stack, first, second, downfirst, downSecond)
+      const validateLeftFirst = stack.some(item => item < first)
+      const validateLeftSecond = stack.some(item => item < second)
+
+      console.log(stack)
+      const validateRightFirst = stack.some(item => item > downfirst)
+      const validateRightSecond = stack.some(item => item > downSecond)
+
+      if (startgame && stack.length > 0) {
+        if (validateLeftFirst && validateLeftSecond && validateRightFirst && validateRightSecond && stack.length === 8) {
+          let points=(stack.length + stackcards.length)
+          Swal.fire({
+            title: `puntos de partida ${points}`,
+            imageUrl: 'https://us-tuna-sounds-images.voicemod.net/3601c42b-1284-4c6b-976b-ab39990b6277.png',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+          })
+        }
+      }
+    }
+  }
+
   const takecard = () => {
     if (cardsThrown < 2 && startgame) {
       alert("Debes tirar al menos 2 cartas antes de tomar una nueva");
