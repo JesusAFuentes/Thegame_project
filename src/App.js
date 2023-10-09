@@ -15,6 +15,49 @@ function App() {
   const [startgame, setstartgame] = useState(false);
   const [turn, setTurn] = useState(1);
   const[points,setPoints] = useState();
+  const [initialState, setInitialState] = useState({
+    stackcards: [],
+    stack: [],
+    upStackfirst: [1],
+    upStackSecond: [1],
+    downStackfirst: [100],
+    downStacksecond: [100],
+    selectedCard: null,
+    allcards: [],
+    cardsThrown: 0,
+    startgame: false,
+    turn: 1,
+    points: 0,
+  });
+  useEffect(() => {
+    if (stack.length === 8) {
+      if (turn === 1) {
+        setstartgame(true);
+      }
+      setcardsThrown(0);
+      setTurn(turn + 1);
+      // Aquí actualizamos el estado inicial al comienzo de cada turno
+      setInitialState({
+        stackcards,
+        stack,
+        upStackfirst,
+        upStackSecond,
+        downStackfirst,
+        downStacksecond,
+        selectedCard,
+        allcards,
+        cardsThrown,
+        startgame,
+        turn,
+        points,
+      });
+    }
+    console.log("el turno es -->", turn)
+  
+    setTimeout(() => {
+      validateDefeat();
+    }, 300)
+  }, [stack]);
   console.log(stackcards)
   useEffect(() => {
     let array = []
@@ -47,9 +90,23 @@ function App() {
     }, 300)
   }, [stack, stackcards])
 
+  const cancelTurn = () => {
+    setStackcards(initialState.stackcards);
+    setStack(initialState.stack);
+    setupStackfirst(initialState.upStackfirst);
+    setupStackSecond(initialState.upStackSecond);
+    setdownStackfirst(initialState.downStackfirst);
+    setdownStacksecond(initialState.downStacksecond);
+    setselectedcard(initialState.selectedCard);
+    setallcards(initialState.allcards);
+    setcardsThrown(initialState.cardsThrown);
+    setstartgame(initialState.startgame);
+    setTurn(initialState.turn);
+    setPoints(initialState.points);
+  };
 
   const validateDefeat = () => {
-    if (upStackfirst.length > 0 && upStackSecond.length > 0) {
+    if (upStackfirst.length > 0 && upStackSecond.length > 0 && downStackfirst.length >0 && downStacksecond.length > 0) {
       const first = upStackfirst[upStackfirst.length - 1];
       const second = upStackSecond[upStackSecond.length - 1];
       const downfirst = downStackfirst[downStackfirst.length - 1];
@@ -255,6 +312,7 @@ function App() {
   }
   return (
     <>
+    <button onClick={cancelTurn}>Cancelar turno</button>
       <div className="game-container">
         <div className="card-container">
           <div className="up-stack" onClick={() => insertCard()} style={{ userSelect: 'none' }}> {upStackfirst[upStackfirst.length - 1]}</div>
