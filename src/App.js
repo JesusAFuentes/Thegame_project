@@ -147,14 +147,14 @@ function App() {
           return Math.floor(Math.random() * stackcards.length);
         }
 
-        const num = stackcards[randomNum()];
-        stackcards.splice(randomNum(), 1);
+        
         if (!startgame) {
           let array = []
           for (let i = 0; i < 8; i++) {
             const randomNu = randomNum()
             array.push(stackcards[randomNu])
             setallcards([...stack, randomNu]);
+            stackcards.splice(randomNu,1);
           }
           console.log("array de juego es -->", array)
           setStack(array);
@@ -167,10 +167,13 @@ function App() {
             for (let i = 0; i < validateTotal; i++) {
               const random = randomNum()
               console.log("numero random es --->",random)
-              numero.push(random)
+              numero.push(stackcards[random])
+              setallcards([...stack, random]);
+              stackcards.splice(random,1);
             }
             setStack([...stack, ...numero]);
             setallcards([...stack, ...numero]);
+            
           }
             
         }
@@ -310,8 +313,15 @@ function App() {
 
     }
   }
+  
+const savecard =()=>{
+    console.log(allcards)
+    localStorage.setItem('allcards',JSON.stringify(allcards))
+    console.log(JSON.parse(localStorage.getItem('allcards')))
+  }
   return (
     <>
+    <button onClick={()=>savecard()}>Almacenar Valores</button>
     <button onClick={cancelTurn}>Cancelar turno</button>
       <div className="game-container">
         <div className="card-container">
