@@ -3,12 +3,32 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 
 function App() {
-  const [stackcards, setStackcards] = useState([]);
-  const [stack, setStack] = useState([]);
-  const [upStackfirst, setupStackfirst] = useState([1]);
-  const [upStackSecond, setupStackSecond] = useState([1]);
-  const [downStackfirst, setdownStackfirst] = useState([100]);
-  const [downStacksecond, setdownStacksecond] = useState([100]);
+  const savedStackcards = localStorage.getItem('stackcards');
+  const initialStackcards = savedStackcards ? JSON.parse(savedStackcards) : [];
+
+  const savedStack = localStorage.getItem('stack');
+  const initialStack = savedStack ? JSON.parse(savedStack) : [];
+
+  const savedUpStackfirst = localStorage.getItem('upStackfirst');
+  const initialUpStackfirst = savedUpStackfirst ? JSON.parse(savedUpStackfirst) : [1];
+
+  const savedUpStackSecond = localStorage.getItem('upStackSecond');
+  const initialUpStackSecond = savedUpStackSecond ? JSON.parse(savedUpStackSecond) : [1];
+
+  const savedDownStackfirst = localStorage.getItem('downStackfirst');
+  const initialDownStackfirst = savedDownStackfirst ? JSON.parse(savedDownStackfirst) : [100];
+
+  const savedDownStacksecond = localStorage.getItem('downStacksecond');
+  const initialDownStacksecond = savedDownStacksecond ? JSON.parse(savedDownStacksecond) : [100];
+
+
+
+  const [stackcards, setStackcards] = useState(initialStackcards);
+  const [stack, setStack] = useState(initialStack);
+  const [upStackfirst, setupStackfirst] = useState(initialUpStackfirst);
+  const [upStackSecond, setupStackSecond] = useState(initialUpStackSecond);
+  const [downStackfirst, setdownStackfirst] = useState(initialDownStackfirst);
+  const [downStacksecond, setdownStacksecond] = useState(initialDownStacksecond);
   const [selectedCard, setselectedcard] = useState();
   const [allcards, setallcards] = useState([]);
   const [cardsThrown, setcardsThrown] = useState(0);
@@ -29,6 +49,16 @@ function App() {
     turn: 1,
     points: 0,
   });
+  
+
+  useEffect(() => {
+    localStorage.setItem('stackcards', JSON.stringify(stackcards));
+    localStorage.setItem('stack', JSON.stringify(stack));
+    localStorage.setItem('upStackfirst', JSON.stringify(upStackfirst));
+    localStorage.setItem('upStackSecond', JSON.stringify(upStackSecond));
+    localStorage.setItem('downStackfirst', JSON.stringify(downStackfirst));
+    localStorage.setItem('downStacksecond', JSON.stringify(downStacksecond));
+  }, [stackcards, stack, upStackfirst, upStackSecond, downStackfirst, downStacksecond]);
   useEffect(() => {
     if (stack.length === 8) {
       if (turn === 1) {
@@ -36,7 +66,6 @@ function App() {
       }
       setcardsThrown(0);
       setTurn(turn + 1);
-      // Aquí actualizamos el estado inicial al comienzo de cada turno
       setInitialState({
         stackcards,
         stack,
@@ -112,15 +141,15 @@ function App() {
       const downfirst = downStackfirst[downStackfirst.length - 1];
       const downSecond = downStacksecond[downStacksecond.length - 1];
       console.log(stack, first, second, downfirst, downSecond)
-      const validateLeftFirst = stack.some(item => item < first)
-      const validateLeftSecond = stack.some(item => item < second)
+      const validateLeftFirst = stack.every(item => item < first)
+      const validateLeftSecond = stack.every(item => item < second)
 
       console.log(stack)
-      const validateRightFirst = stack.some(item => item > downfirst)
-      const validateRightSecond = stack.some(item => item > downSecond)
+      const validateRightFirst = stack.every(item => item > downfirst)
+      const validateRightSecond = stack.every(item => item > downSecond)
 
       if (startgame && stack.length > 0) {
-        if (validateLeftFirst && validateLeftSecond && validateRightFirst && validateRightSecond && stack.length === 8) {
+        if (validateLeftFirst && validateLeftSecond && validateRightFirst && validateRightSecond && cardsThrown<2 ) {
           let points=(stack.length + stackcards.length)
           Swal.fire({
             title: `puntos de partida ${points}`,
@@ -133,7 +162,7 @@ function App() {
       }
     }
   }
-
+  
   const takecard = () => {
     if (cardsThrown < 2 && startgame) {
       alert("Debes tirar al menos 2 cartas antes de tomar una nueva");
@@ -188,7 +217,7 @@ function App() {
     setselectedcard(card)
     console.log(card)
   }
-
+  console.log(cardsThrown)
   const insertCard = () => {
     if (selectedCard) {
       const topCard = upStackfirst[upStackfirst.length - 1];
@@ -313,15 +342,9 @@ function App() {
 
     }
   }
-  
-const savecard =()=>{
-    console.log(allcards)
-    localStorage.setItem('allcards',JSON.stringify(allcards))
-    console.log(JSON.parse(localStorage.getItem('allcards')))
-  }
+
   return (
     <>
-    <button onClick={()=>savecard()}>Almacenar Valores</button>
     <button onClick={cancelTurn}>Cancelar turno</button>
       <div className="game-container">
         <div className="card-container">
