@@ -2,6 +2,14 @@ body{
 background-image: url('img/fono.jpg');
 background-size: cover;
 }
+.reg{
+  color: aliceblue;
+  margin-right: 20px;
+}
+.semilla{
+  color: aliceblue;
+  margin-top: 10px;
+}
 .up-stack, .down-stack, .take-stack, .player-hand1{
   background:
   url('img/darius.jpg');
