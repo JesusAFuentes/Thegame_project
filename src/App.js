@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 import PaginaInicio from './inicio';
 import { Link } from 'react-router-dom';
-
+import { useNavigate, useParams } from "react-router-dom";
+import { getLocalStorage, setLocalStorage, removeItemsLocalStorage } from './globalFunction'
 function App() {
+  const navigate = useNavigate();
   const savedStackcards = localStorage.getItem('stackcards');
   const initialStackcards = savedStackcards ? JSON.parse(savedStackcards) : [];
   const savedStack = localStorage.getItem('stack');
@@ -17,7 +19,7 @@ function App() {
   const initialDownStackfirst = savedDownStackfirst ? JSON.parse(savedDownStackfirst) : [100];
   const savedDownStacksecond = localStorage.getItem('downStacksecond');
   const initialDownStacksecond = savedDownStacksecond ? JSON.parse(savedDownStacksecond) : [100];
-
+  const [game, setGame] = React.useState([])
 
   const [stackcards, setStackcards] = useState(initialStackcards);
   const [stack, setStack] = useState(initialStack);
@@ -45,15 +47,72 @@ function App() {
     turn: 1,
     points: 0,
   });
+  let { seed } = useParams();
+
+  useEffect(() => {
+    console.log("cambio el valor de seed", seed)
+    if (seed === 'new') {
+      setTimeout(() => {
+        setLocalStorage('upStackfirst', [1])
+        setupStackfirst([1])
+        setLocalStorage('upStackSecond', [1])
+        setupStackSecond([1])
+        setLocalStorage('downStackfirst', [100])
+        setdownStackfirst([100])
+        setLocalStorage('downStacksecond', [100])
+        setdownStacksecond([100])
+        removeItemsLocalStorage('seed')
+        removeItemsLocalStorage('stack')
+        setStack([])
+        setcardsThrown(0)
+        setstartgame(false)
+        setPoints(0)
+        setTurn(1)
+      }, 300)
+
+    } else {
+      const list = getLocalStorage('list-seeds')
+      if (list) {
+        console.log(list);
+        console.log(seed);
+        const find = list.find(item => Number(item.idsemilla) === Number(seed))
+        console.log("partida seleccionada --> ", find)
+        if (find) {
+          setTimeout(() => {
+
+            setLocalStorage('seed', find)
+            setStack([])
+            setLocalStorage('upStackfirst', [1])
+            setupStackfirst([1])
+            setLocalStorage('upStackSecond', [1])
+            setupStackSecond([1])
+            setLocalStorage('downStackfirst', [100])
+            setdownStackfirst([100])
+            setLocalStorage('downStacksecond', [100])
+            setdownStacksecond([100])
+            removeItemsLocalStorage('stack')
+            setStack([])
+            setcardsThrown(0)
+            setstartgame(false)
+            setPoints(0)
+            setTurn(1)
+          }, 300)
+        }
+      }
+
+    }
+  }, [])
+
 
 
   useEffect(() => {
-    localStorage.setItem('stackcards', JSON.stringify(stackcards));
-    localStorage.setItem('stack', JSON.stringify(stack));
-    localStorage.setItem('upStackfirst', JSON.stringify(upStackfirst));
-    localStorage.setItem('upStackSecond', JSON.stringify(upStackSecond));
-    localStorage.setItem('downStackfirst', JSON.stringify(downStackfirst));
-    localStorage.setItem('downStacksecond', JSON.stringify(downStacksecond));
+    setLocalStorage('stackcards', stackcards);
+    setLocalStorage('stack', stack);
+    setLocalStorage('upStackfirst', upStackfirst);
+    setLocalStorage('upStackSecond', upStackSecond);
+    setLocalStorage('downStackfirst', downStackfirst);
+    setLocalStorage('downStacksecond', downStacksecond);
+
   }, [stackcards, stack, upStackfirst, upStackSecond, downStackfirst, downStacksecond]);
   useEffect(() => {
     if (stack.length === 8) {
@@ -106,11 +165,11 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => {
-      if (stackcards.length === 0 && stack.length === 0 && startgame) {
-        alert("Victoria");
+      if (game.length === 0 && stack.length === 0) {
+        alert(`Victoria ${points}`);
       }
     }, 300)
-  }, [stack, stackcards])
+  }, [stack, game])
 
   const cancelTurn = () => {
     setStackcards(initialState.stackcards);
@@ -151,12 +210,6 @@ function App() {
       const downFirstMore = validateMore(downfirst, stack)
       const downSecondMore = validateMore(downSecond, stack)
 
-      const playGame = true;
-
-      const carta = 6;
-      const masocartas = [34, 43, 26, 22];
-      const valiteWin = validateLess(84, masocartas) || validateLess(99, masocartas) || validateMore(17, masocartas) || validateMore(55, masocartas)
-
       const validateWin = firstMore || secondMore || downFirstMore || downSecondMore;
 
       const validateRightFirst = stack.every(item => item > downfirst)
@@ -173,15 +226,19 @@ function App() {
               imageWidth: 400,
               imageHeight: 200,
               imageAlt: 'Custom image',
+            }).then(() => {
+
             })
+
           }
         }
       }
+
     }
   }
-  const [game, setGame] = React.useState([])
+  
 
-  const takecard = () => {
+  const takecard = async () => {
     if (cardsThrown < 2 && startgame) {
       alert("Debes tirar al menos 2 cartas antes de tomar una nueva");
       return;
@@ -193,22 +250,16 @@ function App() {
         const randomNum = () => {
           return Math.floor(Math.random() * stackcards.length);
         }
+        if (seed === 'new') {
+          await generateSeed();
+        }
 
-        generateSeed();
         let data = JSON.parse(localStorage.getItem('seed')).data
-        /* Debemos de jugar en base a las cartas que se encuentran en localStorage.getItem('seed').data */
-
-
-        /* Metodo para un juego aleatorio */
+        
         if (!startgame) {
           const primerasOchoCartas = data.splice(0, 8);
           console.log("primeras 8 cartas -->", primerasOchoCartas);
-          /*   for (let i = 0; i < 8; i++) {
-              const randomNu = randomNum()
-              array.push(stackcards[randomNu])
-              stackcards.splice(randomNu, 1);
-              setallcards([...stack, randomNu]);
-            } */
+          
           console.log("array de juego es -->", data)
           setGame(data)
           setStack(primerasOchoCartas);
@@ -227,16 +278,6 @@ function App() {
             setGame(arrayGame)
             console.log("numero  -->", numero)
             console.log("numeros que deberia de mandar", [...stack, ...numero])
-
-
-
-            /*  for (let i = 0; i < validateTotal; i++) {
-               const random = randomNum()
-               console.log("numero random es --->", random)
-               numero.push(stackcards[random])
-               setallcards([...stack, random]);
-               stackcards.splice(random, 1);
-             } */
             setStack([...stack, ...numero]);
             setallcards([...stack, ...numero]);
           }
@@ -253,14 +294,14 @@ function App() {
   }
   const semillaPartida = localStorage.getItem('semillaPartida');
 
-  // Función para guardar la semilla en el localStorage y actualizar el estado
-  function generateSeed() {
+  const [seedActual, setAcualGame] = React.useState();
+  const generateSeed = async () => {
     const semilla = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
     const generate = () => {
-      const n = 98; // Cambia el valor de 'n' según la cantidad de elementos que desees.
-      const min = 2; // Valor mínimo para los números aleatorios.
-      const max = 99; // Valor máximo para los números aleatorios.
+      const n = 98;
+      const min = 2;
+      const max = 99;
       if (max - min + 1 < n) {
         throw new Error("No es posible generar un array único con estos parámetros.");
       }
@@ -274,22 +315,39 @@ function App() {
       }
       return arrayUnico;
     }
+    const result = await Swal.fire({
+      title: 'Ingrese su nombre',
+      input: 'text',
+      inputLabel: 'Su nombre',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return '¡Necesitas escribir algo!'
+        }
+      }
+    })
+    if (result.value) {
+      navigate(`/juego/${semilla}`);
+      const generateSeed = {
+        idsemilla: semilla,
+        data: generate(),
+        name: result.value
+      }
 
-    let seed = {
-      id: semilla,
-      data: generate()
-    };
-    if (!localStorage.getItem('seed')) {
-      localStorage.setItem('seed', JSON.stringify(seed));
+      if (!localStorage.getItem('seed')) {
+        console.log("semilla generada ===>", generateSeed)
+        setAcualGame(generateSeed)
+        localStorage.setItem('seed', JSON.stringify(generateSeed));
+      }
     }
+
+
   }
   const view_id_seed = () => {
     const seed = JSON.parse(localStorage.getItem('seed'));
 
-    return seed ? seed.id : '';
+    return seed ? seed.idsemilla : '';
   }
-
-  // Verificar si la semilla ya está guardada en el localStorage
   const semilla = parseInt(semillaPartida);
 
   const insertCard = () => {
@@ -416,12 +474,36 @@ function App() {
 
     }
   }
-  const array = JSON.parse(localStorage.getItem('seed')) ? JSON.parse(localStorage.getItem('seed')).data  : [];
+  /*  const array = JSON.parse(localStorage.getItem('seed')) ? JSON.parse(localStorage.getItem('seed')).data : []; */
+
+  const saveGame = () => {
+    /* Vamos a guardar la partida en el localstorage */
+    const actual = getLocalStorage('seed')
+    const seeds = getLocalStorage('list-seeds')
+    if (actual) {
+      if (seeds) {
+        /* Vamos a buscar si existe esa partida */
+        let list = seeds.map(item => item)
+        const index = list.findIndex(item => item.idsemilla === actual.idsemilla)
+        console.log("index que se debe de atualizar --->", index)
+        console.log("Lista storage --->", list)
+
+        if (index >= 0) {
+          list[index] = actual
+        } else {
+          list.push(actual)
+        }
+        setLocalStorage('list-seeds', list)
+      } else {
+        setLocalStorage('list-seeds', [actual])
+      }
+    }
+    navigate(`/`);
+  }
   return (
     <>
-      <Link to={'/'} className='reg'>Regresar</Link>
-      <button onClick={cancelTurn}>Cancelar turno</button>
-
+      <p className='reg' onClick={saveGame}>Regresar</p>
+      <button className='button' onClick={cancelTurn}>Cancelar Turno</button>
       <div className="game-container">
         <div className="card-container">
           <div className="up-stack" onClick={() => insertCard()} style={{ userSelect: 'none' }}> {upStackfirst[upStackfirst.length - 1]}</div>
@@ -448,8 +530,22 @@ function App() {
           );
         })}
       </div>
+
     </>
   );
+  const images = document.querySelectorAll('player-hand1');
+
+  images.forEach(image => {
+    image.addEventListener('click', () => {
+      // Primero, quita la clase 'animate' de todas las imágenes
+      images.forEach(otherImage => {
+        otherImage.classList.remove('animate');
+      });
+
+      // Luego, agrega la clase 'animate' solo a la imagen que ha sido clicada
+      image.classList.add('animate');
+    });
+  });
 }
 
 export default App;
