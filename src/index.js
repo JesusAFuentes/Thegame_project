@@ -9,7 +9,9 @@ ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/" element={<PaginaInicio />} />
-      <Route path="/juego" element={<App />} />
+      <Route path="/juego/:seed" element={<App />} />
+      <Route path="/juego/actual" element={<App />} />
+
     </Routes>
   </Router>,
   document.getElementById('root')
