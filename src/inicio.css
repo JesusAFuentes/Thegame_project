@@ -12,3 +12,14 @@ h1{
 .link{
     color: aliceblue;
 }
+
+.partidas{
+    background-color: rgb(220, 202, 202);
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.partidas:hover{
+    background-color: rgba(220, 202, 202,0.7);
+}
