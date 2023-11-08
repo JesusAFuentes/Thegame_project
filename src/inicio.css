@@ -23,3 +23,6 @@ h1{
 .partidas:hover{
     background-color: rgba(220, 202, 202,0.7);
 }
+.link,.linki{
+    user-select: none;
+}

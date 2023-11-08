@@ -14,12 +14,24 @@ function PaginaInicio({ App }) {
     const seed = JSON.parse(localStorage.getItem('seed'))
     if (seed) {
       return seed.idsemilla;
-    }
+    } 
     return 'new';
 
   }
   const goGame = (id) => {
     navigate('/juego/' + id)
+  }
+  const validateData = (item) => {
+    const lista = item.puntaje
+    let num = 0
+    if(lista.length > 0){
+      num = lista[0]
+    }
+    return `${num}/${item.puntaje.length}`
+  }
+  const ordenar = ()=>{
+    const list = getLocalStorage('list-seeds')
+    return list.sort(((a, b) => a.puntaje[0] - b.puntaje[0])).filter((item,idx) => idx <= 49);
   }
   return (
     <div>
@@ -28,10 +40,11 @@ function PaginaInicio({ App }) {
       <Link to={`/juego/actual`} className='link'>Volver al juego</Link>
 
       <div style={{ marginTop: '30px' }}>
-        {list && list.map((item, key) => {
+        {ordenar() && ordenar().map((item, key) => {
           return <div className='partidas' key={key} onClick={() => goGame(item.idsemilla)}>
             <p>{item.idsemilla}</p>
             <p>{item.name}</p>
+            <p>{validateData(item)}</p>
           </div>
         })}
       </div>
