@@ -1,5 +1,8 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import cardSound from './sounds/moneda.mp3';
+import cancelSound from './sounds/cancel.mp3';
+import takeSound from './sounds/takesound.mp3';
 import Swal from 'sweetalert2'
 import PaginaInicio from './inicio';
 import { Link } from 'react-router-dom';
@@ -165,11 +168,13 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => {
-      if (game.length === 0 && stack.length === 0) {
+      const local_seed = getLocalStorage('seed')
+      if (game.length === 0 && stack.length === 0 && startgame && local_seed) {
         alert(`Victoria ${points}`);
       }
     }, 300)
-  }, [stack, game])
+  }, [stack, game, startgame])
+
 
   const cancelTurn = () => {
     setStackcards(initialState.stackcards);
@@ -194,7 +199,6 @@ function App() {
       const downSecond = downStacksecond[downStacksecond.length - 1];
       const validateLeftFirst = stack.every(item => item < first)
       const validateLeftSecond = stack.every(item => item < second)
-      /* Validaciones para saber si la carta de la izquierda son menores a 10 */
       const validateLess = (value, data) => {
         return data.some(item => (value - item) === 10);
       }
@@ -216,17 +220,19 @@ function App() {
       const validateRightSecond = stack.every(item => item > downSecond)
 
       if (startgame && stack.length > 0) {
+        console.log(validateLeftFirst, validateLeftSecond, validateRightFirst, validateRightSecond, cardsThrown < 2);
         if (validateLeftFirst && validateLeftSecond && validateRightFirst && validateRightSecond && cardsThrown < 2) {
           if (!validateWin) {
+            let puntaje = stack.length + game.length
 
-            let points = (stack.length + game.length)
             Swal.fire({
-              title: `puntos de partida ${points}`,
+              title: `puntos de partida ${puntaje}`,
               imageUrl: 'https://us-tuna-sounds-images.voicemod.net/3601c42b-1284-4c6b-976b-ab39990b6277.png',
               imageWidth: 400,
               imageHeight: 200,
               imageAlt: 'Custom image',
             }).then(() => {
+
 
             })
 
@@ -236,13 +242,31 @@ function App() {
 
     }
   }
-  
+
 
   const takecard = async () => {
     if (cardsThrown < 2 && startgame) {
-      alert("Debes tirar al menos 2 cartas antes de tomar una nueva");
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'warning',
+        title: 'Debes de tirar al menos 2 cartas!'
+      })
+      const audio = new Audio(cancelSound);
+      audio.play();
       return;
     } else if (stack.length < 8) {
+
       console.log("entro al obtener");
       if (stackcards.length === 0) {
         alert("El mazo de cartas por tirar está vacío. No puedes tomar más cartas.");
@@ -255,11 +279,11 @@ function App() {
         }
 
         let data = JSON.parse(localStorage.getItem('seed')).data
-        
+
         if (!startgame) {
           const primerasOchoCartas = data.splice(0, 8);
           console.log("primeras 8 cartas -->", primerasOchoCartas);
-          
+
           console.log("array de juego es -->", data)
           setGame(data)
           setStack(primerasOchoCartas);
@@ -282,6 +306,8 @@ function App() {
             setallcards([...stack, ...numero]);
           }
         }
+        const audio = new Audio(takeSound);
+        audio.play();
 
         if (startgame) setcardsThrown(cardsThrown + 1);
       }
@@ -289,32 +315,34 @@ function App() {
   };
 
   const selectCard = (card) => {
+    const audio = new Audio(cardSound);
+    audio.play();
     setselectedcard(card)
     console.log(card)
   }
   const semillaPartida = localStorage.getItem('semillaPartida');
 
   const [seedActual, setAcualGame] = React.useState();
+  const generate = () => {
+    const n = 98;
+    const min = 2;
+    const max = 99;
+    if (max - min + 1 < n) {
+      throw new Error("No es posible generar un array único con estos parámetros.");
+    }
+
+    const arrayUnico = [];
+    while (arrayUnico.length < n) {
+      const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (!arrayUnico.includes(numeroAleatorio)) {
+        arrayUnico.push(numeroAleatorio);
+      }
+    }
+    return arrayUnico;
+  }
   const generateSeed = async () => {
     const semilla = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
-    const generate = () => {
-      const n = 98;
-      const min = 2;
-      const max = 99;
-      if (max - min + 1 < n) {
-        throw new Error("No es posible generar un array único con estos parámetros.");
-      }
-
-      const arrayUnico = [];
-      while (arrayUnico.length < n) {
-        const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
-        if (!arrayUnico.includes(numeroAleatorio)) {
-          arrayUnico.push(numeroAleatorio);
-        }
-      }
-      return arrayUnico;
-    }
     const result = await Swal.fire({
       title: 'Ingrese su nombre',
       input: 'text',
@@ -331,11 +359,10 @@ function App() {
       const generateSeed = {
         idsemilla: semilla,
         data: generate(),
-        name: result.value
+        name: result.value,
       }
 
       if (!localStorage.getItem('seed')) {
-        console.log("semilla generada ===>", generateSeed)
         setAcualGame(generateSeed)
         localStorage.setItem('seed', JSON.stringify(generateSeed));
       }
@@ -377,6 +404,8 @@ function App() {
           icon: 'warning',
           title: 'Movimiento invalido, No puedes colocar un carta menor!'
         })
+        const audio = new Audio(cancelSound);
+        audio.play();
       }
     }
   }
@@ -392,6 +421,7 @@ function App() {
         setStack(updatedHand1);
         setselectedcard(null);
         setcardsThrown(cardsThrown + 1);
+        
       } else {
         const Toast = Swal.mixin({
           toast: true,
@@ -409,6 +439,8 @@ function App() {
           icon: 'warning',
           title: 'Movimiento invalido, No puedes colocar un carta menor!'
         })
+        const audio = new Audio(cancelSound);
+        audio.play();
       }
 
     }
@@ -440,6 +472,8 @@ function App() {
           icon: 'warning',
           title: 'Movimiento invalido, No puedes colocar un carta mayor!'
         })
+        const audio = new Audio(cancelSound);
+        audio.play();
       }
     }
   }
@@ -470,6 +504,8 @@ function App() {
           icon: 'warning',
           title: 'Movimiento invalido, No puedes colocar un carta mayor!'
         })
+        const audio = new Audio(cancelSound);
+        audio.play();
       }
 
     }
@@ -480,22 +516,26 @@ function App() {
     /* Vamos a guardar la partida en el localstorage */
     const actual = getLocalStorage('seed')
     const seeds = getLocalStorage('list-seeds')
+    let puntaje = stack.length + game.length
     if (actual) {
       if (seeds) {
         /* Vamos a buscar si existe esa partida */
         let list = seeds.map(item => item)
         const index = list.findIndex(item => item.idsemilla === actual.idsemilla)
-        console.log("index que se debe de atualizar --->", index)
-        console.log("Lista storage --->", list)
+
+
 
         if (index >= 0) {
-          list[index] = actual
+          const listaPuntaje = list[index].puntaje
+          const score = [...listaPuntaje, puntaje].sort()
+          list[index] = { ...actual, puntaje: score }
+
         } else {
-          list.push(actual)
+          list.push({ ...actual, puntaje: [puntaje] })
         }
         setLocalStorage('list-seeds', list)
       } else {
-        setLocalStorage('list-seeds', [actual])
+        setLocalStorage('list-seeds', [{ ...actual, puntaje: [puntaje] }])
       }
     }
     navigate(`/`);

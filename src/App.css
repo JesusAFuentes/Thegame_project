@@ -87,3 +87,7 @@ background-size: cover;
   position: relative;
   top: 2px;
  }
+
+ .reg{
+  user-select: none;
+ }
