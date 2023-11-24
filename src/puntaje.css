@@ -1,0 +1,28 @@
+.regreso{
+    color: white;
+    user-select: none;
+    text-decoration: none;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    background-color: white;
+  }
+  
+  .table th {
+    background-color: orange;
+    color: black;
+  }
+  
+  .table tr:hover td,
+  .table tr:hover th {
+    background-color: rgba(221, 221, 221, 0.5);
+  }
