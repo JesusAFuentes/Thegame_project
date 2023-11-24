@@ -3,26 +3,29 @@ body{
     }
 h1{
     color: aliceblue;
+    margin-left: 700px;
 }
 .linki{
     color: aliceblue;
     padding: 50px;
+    margin-left: 600px;
+    text-decoration: none;
     
 }
-.link{
+.link,.linke{
     color: aliceblue;
+    text-decoration: none;
+    margin-right: 50px;
 }
-
-.partidas{
-    background-color: rgb(220, 202, 202);
-    display: flex;
-    gap: 20px;
-    cursor: pointer;
-}
-
-.partidas:hover{
-    background-color: rgba(220, 202, 202,0.7);
-}
-.link,.linki{
+.linka{
+    margin-left: 10px;
+    color: #ecf0f1;
     user-select: none;
+    text-decoration: none;
+   }
+.link,.linki,.linke{
+    user-select: none;
+}
+.swal2-shown{
+    height: 100vh;
 }
