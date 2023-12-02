@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import cardSound from './sounds/moneda.mp3';
 import cancelSound from './sounds/cancel.mp3';
 import takeSound from './sounds/takesound.mp3';
+import cancelSound1 from './sounds/cancel-116016.mp3';
+import youloseSound from './sounds/YOULOSE.mp3';
 import Swal from 'sweetalert2'
 import PaginaInicio from './inicio';
 import { Link } from 'react-router-dom';
@@ -76,10 +78,7 @@ function App() {
     } else {
       const list = getLocalStorage('list-seeds')
       if (list) {
-        console.log(list);
-        console.log(seed);
         const find = list.find(item => Number(item.idsemilla) === Number(seed))
-        console.log("partida seleccionada --> ", find)
         if (find) {
           setTimeout(() => {
 
@@ -159,7 +158,7 @@ function App() {
       setcardsThrown(0);
       setTurn(turn + 1);
     }
-    console.log("el turno es -->", turn)
+
 
     setTimeout(() => {
       validateDefeat();
@@ -180,6 +179,8 @@ function App() {
     setstartgame(initialState.startgame);
     setTurn(initialState.turn);
     setPoints(initialState.points);
+    const audio = new Audio(cancelSound1);
+    audio.play();
   };
 
   const validateDefeat = () => {
@@ -224,17 +225,16 @@ function App() {
               imageAlt: 'Custom image',
             }).then(() => {
 
-
+              
             })
-
+            const audio = new Audio(youloseSound);
+              audio.play();
           }
         }
       }
 
     }
   }
-
-
   const takecard = async () => {
     if (cardsThrown < 2 && startgame) {
       const Toast = Swal.mixin({
@@ -509,7 +509,6 @@ function App() {
 
     }
   }
-  /*  const array = JSON.parse(localStorage.getItem('seed')) ? JSON.parse(localStorage.getItem('seed')).data : []; */
 
   const saveGame = () => {
     /* Vamos a guardar la partida en el localstorage */
@@ -542,11 +541,10 @@ function App() {
   return (
     <>
       <div className='container'>
-        <button class="Btn">
+        <button class="Btn" onClick={saveGame} >
 
           <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
 
-          <div class="text"onClick={saveGame} >    Regresar</div>
         </button>
         <button className='button' onClick={cancelTurn}>Cancelar Turno</button>
       </div>
