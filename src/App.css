@@ -1,38 +1,258 @@
-.App {
-  text-align: center;
+body{
+background-image: url('img/511364.png');
+background-size:cover;
+background-repeat: no-repeat;
+height: 100vh;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.reg{
+  color: aliceblue;
+  margin-right: 20px;
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 20px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.semilla{
+  color: aliceblue;
+  margin-top: 10px;
 }
+.up-stack, .down-stack, .take-stack, .player-hand1{
+  background:
+  url('img/tarjeta-ryu-sfv-03.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  border-radius: 8px;
+  padding: 10px;
+  width: 150px;
+  height: 150px;
   display: flex;
-  flex-direction: column;
+  margin-left: 10px;
+  font-family: 'Anton';
+  font-size: 50px;
+  color: white;
+  -webkit-text-stroke: 2px black;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: #e67e22;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+/* plus sign */
+.sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+/* text */
+.text {
+  position: center;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
   color: white;
+  font-size: 1em;
+  font-weight: 600;
+  transition-duration: .3s;
+  
+}
+/* hover effect on button width */
+.Btn:hover {
+  width: 70px;
+  border-radius: 40px;
+  transition-duration: .3s;
+  
 }
 
-.App-link {
-  color: #61dafb;
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+/* hover effect button's text */
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+  margin-left: 5px;
+}
+/* button click effect*/
+.Btn:active {
+  transform: translate(2px ,2px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.down-stack{
+  margin-left: 100px;
+  margin-bottom: 10px;
+}
+.up-stack {
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 100px;
+  
+}
+.game-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+}
+
+
+.player-hand{
+  display: flex;
+  margin-top: 30px;
+  margin-left: 10px;
+  justify-content: center;
+  
+}
+.player-hand1{
+  margin-left: 10px;
+  width: calc(25% - 10px);
+  margin: 5px;
+}
+
+.player-hand1:active{
+  border: 2px solid black;
+}
+
+.take-stack{
+  margin-top: 100px;
+}
+.button {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #e67e22;
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 6px 0px #d35400;
+  transition: all .1s;
+  margin-left: 10px; /* Ajusta la distancia entre el texto y el botón según sea necesario */
+}
+ 
+ .button:active {
+  box-shadow: 0px 2px 0px #d35400;
+  position: relative;
+  top: 2px;
+ }
+
+ .reg{
+  user-select: none;
+ }
+ .container{
+  margin-left: 10px;
+ }
+ @media (max-width: 768px) {
+  .up-stack, .down-stack, .take-stack, .player-hand1{
+    background:
+  url('img/tarjeta-ryu-sfv-03.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border-radius: 8px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  margin-left: 10px;
+  font-family: 'Anton';
+  font-size: 50px;
+  color: white;
+  display:flex;
+  justify-content: center;
+  align-items: center;
   }
-  to {
-    transform: rotate(360deg);
+  .down-stack{
+    margin-left: 10px;
+    margin-bottom: 10px;
   }
+  .up-stack {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 30px;
+    
+  }
+  .take-stack{
+    margin-left: 30px;
+  }
+  .player-hand{
+    display:flex;
+    margin-top: 30px;
+    margin-left: 5px;
+    justify-content: center;
+    transition: transform 0.3s;
+  
+  }
+}
+
+@media (max-width: 390px) {
+  .up-stack, .down-stack, .take-stack, .player-hand1{
+    background:
+    url('img/tarjeta-ryu-sfv-03.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  
+    border-radius: 8px;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    margin-left: 10px;
+    font-family: 'Anton';
+    font-size: 30px;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  .player-hand1 {
+    background: url('img/tarjeta-ryu-sfv-03.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    margin-left: 10px;
+    font-family: 'Anton';
+    font-size: 30px;
+    color: white;
+    -webkit-text-stroke: 2px black;
+
+
+}
 }
