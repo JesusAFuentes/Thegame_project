@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import cardSound from './sounds/moneda.mp3';
 import cancelSound from './sounds/cancel.mp3';
 import takeSound from './sounds/takesound.mp3';
+import cancelSound1 from './sounds/cancel-116016.mp3';
+import youloseSound from './sounds/YOULOSE.mp3';
+import wowSound from './sounds/wow.mp3';
 import Swal from 'sweetalert2'
 import PaginaInicio from './inicio';
 import { Link } from 'react-router-dom';
@@ -168,8 +171,7 @@ function Experto() {
 
 
   const cancelTurn = () => {
-    setStackcards(initialState.stackcards);
-    setStack(initialState.stack);
+    
     setupStackfirst(initialState.upStackfirst);
     setupStackSecond(initialState.upStackSecond);
     setdownStackfirst(initialState.downStackfirst);
@@ -180,6 +182,8 @@ function Experto() {
     setstartgame(initialState.startgame);
     setTurn(initialState.turn);
     setPoints(initialState.points);
+    const audio = new Audio(cancelSound1);
+    audio.play();
   };
 
   const validateDefeat = () => {
@@ -226,7 +230,8 @@ function Experto() {
 
 
             })
-
+            const audio = new Audio(youloseSound);
+              audio.play();
           }
         }
       }
@@ -373,6 +378,8 @@ function Experto() {
     if (selectedCard) {
       const topCard = upStackfirst[upStackfirst.length - 1];
       if (!topCard || selectedCard === topCard - 10 || selectedCard > topCard) {
+        const audio = new Audio(wowSound);
+        audio.play();
         const updatedStack = [...upStackfirst, selectedCard];
         const updatedHand = stack.filter((card) => card !== selectedCard);
         setupStackfirst(updatedStack);
@@ -413,7 +420,8 @@ function Experto() {
         setStack(updatedHand1);
         setselectedcard(null);
         setcardsThrown(cardsThrown + 1);
-
+        const audio = new Audio(wowSound);
+        audio.play();
       } else {
         const Toast = Swal.mixin({
           toast: true,
@@ -441,12 +449,15 @@ function Experto() {
     if (selectedCard) {
       const topCard2 = downStackfirst[downStackfirst.length - 1];
       if (!topCard2 || selectedCard === topCard2 + 10 || selectedCard < topCard2) {
+        const audio = new Audio(wowSound);
+        audio.play();
         const updatedStack = downStackfirst;
         const updatedHand = stack.filter((card) => card !== selectedCard);
         setdownStackfirst([...updatedStack, selectedCard]);
         setStack(updatedHand);
         setselectedcard(null);
         setcardsThrown(cardsThrown + 1);
+        
       } else {
         const Toast = Swal.mixin({
           toast: true,
@@ -473,6 +484,8 @@ function Experto() {
     if (selectedCard) {
       const topCard3 = downStacksecond[downStacksecond.length - 1];
       if (!topCard3 || selectedCard === topCard3 + 10 || selectedCard < topCard3) {
+        const audio = new Audio(wowSound);
+        audio.play();
         const updatedStack = downStacksecond;
         const updatedHand = stack.filter((card) => card !== selectedCard);
         setdownStacksecond([...updatedStack, selectedCard]);
@@ -535,12 +548,11 @@ function Experto() {
   return (
     <>
       <div className='container'>
-        <button class="Btn">
+      <button class="Btn" onClick={saveGame} >
 
-          <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+<div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
 
-          <div class="text"onClick={saveGame} >    Regresar</div>
-        </button>
+</button>
         <button className='button' onClick={cancelTurn}>Cancelar Turno</button>
       </div>
 
