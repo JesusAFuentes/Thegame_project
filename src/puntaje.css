@@ -2,6 +2,7 @@
     color: white;
     user-select: none;
     text-decoration: none;
+    
 }
 .table {
     width: 100%;
@@ -25,4 +26,16 @@
   .table tr:hover td,
   .table tr:hover th {
     background-color: rgba(221, 221, 221, 0.5);
+  }
+  .normal{
+    color: white;
+    text-align: center;
+  }
+  .experto{
+    color: white;
+    text-align: center;
+  }
+  .salon{
+    color: white;
+    text-align: center;
   }
