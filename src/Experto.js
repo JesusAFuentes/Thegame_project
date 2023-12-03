@@ -555,6 +555,12 @@ function Experto() {
 </button>
         <button className='button' onClick={cancelTurn}>Cancelar Turno</button>
       </div>
+      <div className='imgcont'>
+      <div className='imgcont1'>
+
+</div>
+
+</div>
 
       <div className="game-container">
         <div className="card-container">

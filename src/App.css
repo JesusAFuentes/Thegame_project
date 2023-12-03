@@ -37,6 +37,23 @@ height: 100vh;
   align-items: center;
 
 }
+.imgcont {
+
+  width: 100px; /* ajusta el ancho según tus necesidades */
+  height: 100px; /* ajusta la altura según tus necesidades */
+  background-image: url('img/arriba.png');
+  background-size: cover;
+  margin-left: 400px;
+  
+}
+.imgcont1 {
+
+  width: 100px; /* ajusta el ancho según tus necesidades */
+  height: 100px; /* ajusta la altura según tus necesidades */
+  background-image: url('img/abajo.png');
+  background-size: cover;
+  margin-left: 550px;
+}
 .Btn {
   display: flex;
   align-items: center;

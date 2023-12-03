@@ -540,6 +540,7 @@ function App() {
   }
   return (
     <>
+    
       <div className='container'>
         <button class="Btn" onClick={saveGame} >
 
@@ -548,17 +549,31 @@ function App() {
         </button>
         <button className='button' onClick={cancelTurn}>Cancelar Turno</button>
       </div>
+      <div className='imgcont'>
+      <div className='imgcont1'>
 
+</div>
+
+</div>
+      
+          
+       
       <div className="game-container">
         <div className="card-container">
+        
+          
           <div className="up-stack" onClick={() => insertCard()} style={{ userSelect: 'none' }}> {upStackfirst[upStackfirst.length - 1]}</div>
+          
           <div className="up-stack" onClick={() => insertCard1()} style={{ userSelect: 'none' }}>{upStackSecond[upStackSecond.length - 1]}</div>
+          
         </div>
+        
 
         <div className="card-container" onClick={() => takecard()}>
           <div className="take-stack"></div>
           {view_id_seed() && <div className="semilla">Semilla de la partida: {view_id_seed()}</div>}
         </div>
+        
 
         <div className="card-container">
           <div className="down-stack" onClick={() => insertCard2()} style={{ userSelect: 'none' }}>{downStackfirst[downStackfirst.length - 1]}</div>
